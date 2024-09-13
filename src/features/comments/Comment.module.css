@@ -1,0 +1,101 @@
+.comment {
+  display: flex;
+  gap: 24px;
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.voteContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  flex-basis: 40px;
+  flex-shrink: 0;
+  height: 100px;
+  background-color: #f5f6fa;
+  border-radius: 10px;
+}
+
+.voteContainer button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.voteContainer button img {
+  filter: invert(79%) sepia(29%) saturate(416%) hue-rotate(201deg)
+    brightness(99%) contrast(88%);
+}
+
+.voteContainer span {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.content section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content section img.avatar {
+  width: 32px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user strong {
+  color: var(--dark-blue);
+}
+
+.user span,
+.content p {
+  color: var(--gray-blue);
+  font-weight: 400;
+  line-height: 150%;
+}
+
+.reply {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.reply p {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.reply img {
+  filter: invert(37%) sepia(18%) saturate(2051%) hue-rotate(200deg)
+    brightness(91%) contrast(92%);
+}
+
+/*** Hovers */
+
+.voteContainer button:hover img {
+  filter: invert(39%) sepia(14%) saturate(3377%) hue-rotate(204deg)
+    brightness(85%) contrast(88%);
+}
+
+.reply:hover p {
+  color: var(--light-gray-blue);
+}
+
+.reply:hover img {
+  filter: invert(82%) sepia(8%) saturate(889%) hue-rotate(201deg)
+    brightness(96%) contrast(96%);
+}
