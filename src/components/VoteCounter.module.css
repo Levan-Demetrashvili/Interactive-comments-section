@@ -1,0 +1,35 @@
+.voteContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  flex-basis: 40px;
+  flex-shrink: 0;
+  height: 100px;
+  background-color: #f5f6fa;
+  border-radius: 10px;
+}
+
+.voteContainer button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.voteContainer button img {
+  filter: invert(79%) sepia(29%) saturate(416%) hue-rotate(201deg)
+    brightness(99%) contrast(88%);
+}
+
+.voteContainer span {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+/*** Hovers */
+
+.voteContainer button:hover img {
+  filter: invert(39%) sepia(14%) saturate(3377%) hue-rotate(204deg)
+    brightness(85%) contrast(88%);
+}

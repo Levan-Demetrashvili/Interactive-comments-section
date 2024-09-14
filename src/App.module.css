@@ -4,3 +4,22 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.repliesCont {
+  display: flex;
+  margin: 20px 0;
+}
+
+.replies {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.repliesCont hr {
+  width: 2px;
+  border: none;
+  margin: 0 43px;
+  background-color: #e9ebf0;
+  flex-shrink: 0;
+}

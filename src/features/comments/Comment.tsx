@@ -1,18 +1,11 @@
 import { CommentPropsTypes } from './comments.types';
+import VoteCounter from '../../components/VoteCounter';
 import styles from './Comment.module.css';
 
-export default function Comment({ data }: CommentPropsTypes) {
+export default function Comment({ data, isReply = false }: CommentPropsTypes) {
   return (
     <div className={styles.comment}>
-      <div className={styles.voteContainer}>
-        <button>
-          <img src='/assets/icons/icon-plus.svg' alt='plus icon' />
-        </button>
-        <span>{data.score}</span>
-        <button>
-          <img src='/assets/icons/icon-minus.svg' alt='minus icon' />
-        </button>
-      </div>
+      <VoteCounter score={data.score} />
       <div className={styles.content}>
         <section>
           <div className={styles.user}>
@@ -29,7 +22,12 @@ export default function Comment({ data }: CommentPropsTypes) {
             <p>Reply</p>
           </div>
         </section>
-        <p>{data.content}</p>
+        <p>
+          {isReply && (
+            <span className={styles.replyingTo}>@{data.replyingTo}</span>
+          )}{' '}
+          {data.content}
+        </p>
       </div>
     </div>
   );

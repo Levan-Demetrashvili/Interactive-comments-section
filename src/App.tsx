@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from './store';
 
 import Comment from './features/comments/Comment';
+import SendComment from './features/CurrentUser/SendComment';
 import styles from './App.module.css';
 
 function App() {
@@ -9,8 +10,21 @@ function App() {
   return (
     <div className={styles.chat}>
       {comments?.map(comment => (
-        <Comment key={comment.id} data={comment} />
+        <div key={comment.id} className={styles.commentContainer}>
+          <Comment data={comment} />
+          {comment.replies[0] && (
+            <div className={styles.repliesCont}>
+              <hr />
+              <div className={styles.replies}>
+                {comment.replies.map((reply: Record<string, any>) => (
+                  <Comment key={reply.id} isReply={true} data={reply} />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       ))}
+      <SendComment />
     </div>
   );
 }

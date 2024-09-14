@@ -6,4 +6,11 @@ export interface StateTypes {
 
 export interface CommentPropsTypes {
   data: Record<string, any>;
+  isReply?: boolean;
+}
+
+export interface ActionTypes {
+  payload: any;
+  type: string;
+  error?: boolean;
 }
