@@ -6,8 +6,10 @@ import App from './App.tsx';
 import './index.css';
 
 import { fetchComments } from './features/comments/comments.ts';
+import { fetchCurrentUser } from './features/CurrentUser/currentUser.ts';
 
 store.dispatch(fetchComments());
+store.dispatch(fetchCurrentUser());
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

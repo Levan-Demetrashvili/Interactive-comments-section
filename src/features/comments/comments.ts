@@ -14,7 +14,7 @@ const commentsSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    fetchComments(state, action: ActionTypes) {
+    ReceivedComments(state, action: ActionTypes) {
       state.isLoading = false;
       if (action.error)
         state.error = `${action.payload.message} (${action.payload.status})`;
@@ -22,6 +22,28 @@ const commentsSlice = createSlice({
     },
     startFetching(state) {
       return { ...state, isLoading: true, error: '' };
+    },
+
+    upVote(state, action) {
+      const isReply = action.payload.isReply;
+      state.comments.map(comment => {
+        if (!isReply)
+          return comment.id === action.payload.id ? comment.score++ : comment;
+        return comment.replies.map((reply: any) =>
+          reply.id === action.payload.id ? reply.score++ : reply
+        );
+      });
+    },
+
+    downVote(state, action) {
+      const isReply = action.payload.isReply;
+      state.comments.map(comment => {
+        if (!isReply)
+          return comment.id === action.payload.id ? comment.score-- : comment;
+        return comment.replies.map((reply: any) =>
+          reply.id === action.payload.id ? reply.score-- : reply
+        );
+      });
     },
   },
 });
@@ -31,16 +53,18 @@ export function fetchComments() {
     try {
       dispatch({ type: 'comments/startFetching' });
       const res: AxiosResponse = await axios.get(API_URL + '/comments');
-      if (!res.data) throw new Error('Something went wrong during fetching');
+      if (!res.data)
+        throw new Error('Something went wrong during fetching comments');
       dispatch({
-        type: 'comments/fetchComments',
+        type: 'comments/ReceivedComments',
         payload: res.data,
         error: false,
       });
     } catch (e) {
-      dispatch({ type: 'comments/fetchComments', payload: e, error: true });
+      dispatch({ type: 'comments/ReceivedComments', payload: e, error: true });
     }
   };
 }
 
 export default commentsSlice.reducer;
+export const { upVote, downVote } = commentsSlice.actions;
