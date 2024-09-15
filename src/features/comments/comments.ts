@@ -28,9 +28,19 @@ const commentsSlice = createSlice({
       const isReply = action.payload.isReply;
       state.comments.map(comment => {
         if (!isReply)
-          return comment.id === action.payload.id ? comment.score++ : comment;
+          return comment.id === action.payload.id
+            ? (comment.score =
+                comment.score === comment.defaultScore + 1
+                  ? comment.defaultScore
+                  : comment.defaultScore + 1)
+            : comment;
         return comment.replies.map((reply: any) =>
-          reply.id === action.payload.id ? reply.score++ : reply
+          reply.id === action.payload.id
+            ? (reply.score =
+                reply.score === reply.defaultScore + 1
+                  ? reply.defaultScore
+                  : reply.defaultScore + 1)
+            : reply
         );
       });
     },
@@ -39,9 +49,19 @@ const commentsSlice = createSlice({
       const isReply = action.payload.isReply;
       state.comments.map(comment => {
         if (!isReply)
-          return comment.id === action.payload.id ? comment.score-- : comment;
+          return comment.id === action.payload.id
+            ? (comment.score =
+                comment.score === comment.defaultScore - 1
+                  ? comment.defaultScore
+                  : comment.defaultScore - 1)
+            : comment;
         return comment.replies.map((reply: any) =>
-          reply.id === action.payload.id ? reply.score-- : reply
+          reply.id === action.payload.id
+            ? (reply.score =
+                reply.score === reply.defaultScore - 1
+                  ? reply.defaultScore
+                  : reply.defaultScore - 1)
+            : reply
         );
       });
     },

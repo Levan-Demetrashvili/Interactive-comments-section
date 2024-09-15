@@ -29,7 +29,8 @@
 
 /*** Hovers */
 
-.voteContainer button:hover img {
+.voteContainer button:hover img,
+.voteContainer .voted img {
   filter: invert(39%) sepia(14%) saturate(3377%) hue-rotate(204deg)
     brightness(85%) contrast(88%);
 }

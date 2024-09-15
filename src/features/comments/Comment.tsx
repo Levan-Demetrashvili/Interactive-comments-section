@@ -5,7 +5,12 @@ import styles from './Comment.module.css';
 export default function Comment({ data, isReply = false }: CommentPropsTypes) {
   return (
     <div className={styles.comment}>
-      <VoteCounter score={data.score} id={data.id} isReply={isReply} />
+      <VoteCounter
+        id={data.id}
+        score={data.score}
+        defaultScore={data.defaultScore}
+        isReply={isReply}
+      />
       <div className={styles.content}>
         <section>
           <div className={styles.user}>
