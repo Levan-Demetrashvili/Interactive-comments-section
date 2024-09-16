@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { ActionTypes, StateTypes } from './comments.types';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { API_URL } from '../../config/config';
 
 const initialState: StateTypes = {
@@ -14,14 +14,19 @@ const commentsSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    ReceivedComments(state, action: ActionTypes) {
+    ReceivedData(state, action: ActionTypes) {
       state.isLoading = false;
       if (action.error)
         state.error = `${action.payload.message} (${action.payload.status})`;
       else state.comments = action.payload;
+      console.log(state.comments);
     },
     startFetching(state) {
       return { ...state, isLoading: true, error: '' };
+    },
+
+    addComment(state, action) {
+      return { ...state, comments: [...state.comments, action.payload] };
     },
 
     upVote(state, action) {
@@ -76,13 +81,29 @@ export function fetchComments() {
       if (!res.data)
         throw new Error('Something went wrong during fetching comments');
       dispatch({
-        type: 'comments/ReceivedComments',
+        type: 'comments/ReceivedData',
         payload: res.data,
         error: false,
       });
     } catch (e) {
-      dispatch({ type: 'comments/ReceivedComments', payload: e, error: true });
+      dispatch({ type: 'comments/ReceivedData', payload: e, error: true });
     }
+  };
+}
+
+export function addComment(content: string) {
+  return async function (dispatch: AppDispatch, getState: () => RootState) {
+    const newComment = {
+      id: Math.floor(Math.random() * 10_000_000),
+      content,
+      createdAt: 'now',
+      score: 0,
+      defaultScore: 0,
+      replies: [],
+      currentUser: true,
+      user: getState().currentUser.user,
+    };
+    dispatch({ type: 'comments/addComment', payload: newComment });
   };
 }
 
