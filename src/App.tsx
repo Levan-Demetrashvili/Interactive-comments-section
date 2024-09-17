@@ -11,13 +11,21 @@ function App() {
     <div className={styles.chat}>
       {comments?.map(comment => (
         <div key={comment.id} className={styles.commentContainer}>
-          <Comment data={comment} />
+          <Comment
+            data={comment}
+            isCurrentUser={comment.currentUser ? true : false}
+          />
           {comment.replies[0] && (
             <div className={styles.repliesCont}>
               <hr />
               <div className={styles.replies}>
                 {comment.replies.map((reply: Record<string, any>) => (
-                  <Comment key={reply.id} isReply={true} data={reply} />
+                  <Comment
+                    key={reply.id}
+                    isReply={true}
+                    data={reply}
+                    isCurrentUser={comment.currentUser ? true : false}
+                  />
                 ))}
               </div>
             </div>

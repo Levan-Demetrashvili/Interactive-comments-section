@@ -29,6 +29,13 @@ const commentsSlice = createSlice({
       return { ...state, comments: [...state.comments, action.payload] };
     },
 
+    deleteComment(state, action) {
+      return {
+        ...state,
+        comments: state.comments.filter(c => c.id !== action.payload),
+      };
+    },
+
     upVote(state, action) {
       const isReply = action.payload.isReply;
       state.comments.map(comment => {
@@ -108,4 +115,4 @@ export function addComment(content: string) {
 }
 
 export default commentsSlice.reducer;
-export const { upVote, downVote } = commentsSlice.actions;
+export const { upVote, downVote, deleteComment } = commentsSlice.actions;

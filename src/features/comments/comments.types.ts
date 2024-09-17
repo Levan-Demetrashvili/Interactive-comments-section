@@ -10,5 +10,6 @@ export interface ActionTypes {
 }
 export interface CommentPropsTypes {
   data: Record<string, any>;
+  isCurrentUser: boolean;
   isReply?: boolean;
 }

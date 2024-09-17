@@ -11,6 +11,12 @@ export default function SendComment() {
   );
   const dispatch: AppDispatch = useDispatch();
 
+  function handleClick() {
+    if (!text) return;
+    dispatch(addComment(text));
+    setText('');
+  }
+
   if (!user || isLoading) return null;
 
   return (
@@ -22,7 +28,7 @@ export default function SendComment() {
         value={text}
         onChange={e => setText(e.target.value)}
       ></textarea>
-      <button onClick={() => dispatch(addComment(text))}>SEND</button>
+      <button onClick={handleClick}>SEND</button>
     </div>
   );
 }
