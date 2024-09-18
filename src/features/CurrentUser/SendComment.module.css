@@ -12,21 +12,6 @@
   width: 40px;
 }
 
-.box textarea {
-  width: 100%;
-  height: 96px;
-  color: var(--dark-blue);
-  caret-color: var(--blue);
-  background-color: var(--white);
-  line-height: 150%;
-
-  border: 2px solid #e9ebf0;
-  border-radius: 8px;
-  padding: 12px 24px;
-  resize: none;
-  scrollbar-width: none;
-}
-
 .box button {
   line-height: 150%;
   color: var(--white);
@@ -42,16 +27,4 @@
 /** Hovers */
 .box button:hover {
   background-color: var(--light-gray-blue);
-}
-
-/** on Focus */
-
-.box textarea:focus {
-  border-color: var(--blue);
-}
-
-/** Pseudo Elements */
-
-.box textarea::placeholder {
-  color: var(--gray-blue);
 }

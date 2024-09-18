@@ -1,9 +1,5 @@
+import { ModalPropsTypes } from '../types/Modal.types';
 import styles from './Modal.module.css';
-
-interface ModalPropsTypes {
-  onCancel: () => void;
-  onDelete: () => void;
-}
 
 export default function Modal({ onCancel, onDelete }: ModalPropsTypes) {
   return (
@@ -12,8 +8,8 @@ export default function Modal({ onCancel, onDelete }: ModalPropsTypes) {
       <div className={styles.modal}>
         <h1>Delete comment</h1>
         <p>
-          Are you sure you want to delete this comment? This will remove the
-          comment and can’t be undone.
+          Are you sure you want to delete this comment? This will remove the comment and
+          can’t be undone.
         </p>
         <div className={styles.buttons}>
           <button className={styles.cancelBtn} onClick={onCancel}>

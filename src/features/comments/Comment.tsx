@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteComment } from './comments';
-import { CommentPropsTypes } from './comments.types';
+import { deleteComment, editComment } from './comments';
+import { CommentPropsTypes, ContentTextPropsTypes } from './comments.types';
 import VoteCounter from '../../components/VoteCounter';
 import Modal from '../../components/Modal';
+import Button from '../../components/Button';
 import styles from './Comment.module.css';
 
 export default function Comment({
@@ -11,6 +12,8 @@ export default function Comment({
   isCurrentUser,
   isReply = false,
 }: CommentPropsTypes) {
+  const [isEditable, setIsEditable] = useState(false);
+
   return (
     <div className={styles.comment}>
       <VoteCounter
@@ -33,23 +36,56 @@ export default function Comment({
             <span>{data.createdAt}</span>
           </div>
           {isCurrentUser ? (
-            <CurrentUserButtons id={data.id} />
+            <CurrentUserButtons id={data.id} onEdit={() => setIsEditable(true)} />
           ) : (
             <ReplyButton />
           )}
         </section>
-        <p>
-          {isReply && (
-            <span className={styles.replyingTo}>@{data.replyingTo}</span>
-          )}{' '}
-          {data.content}
-        </p>
+        <ContentText
+          data={data}
+          isReply={isReply}
+          isEditable={isEditable}
+          setIsEditable={setIsEditable}
+        />
       </div>
     </div>
   );
 }
 
-function CurrentUserButtons({ id }: { id: number }) {
+function ContentText({
+  data,
+  isReply,
+  isEditable,
+  setIsEditable,
+}: ContentTextPropsTypes) {
+  const [text, setText] = useState(data.content);
+  const dispatch = useDispatch();
+
+  function updateComment(id: number, text: string) {
+    setIsEditable(false);
+    dispatch(editComment({ id, text }));
+  }
+  return (
+    <>
+      <pre>
+        {isReply && <span className={styles.replyingTo}>@{data.replyingTo}</span>}{' '}
+        {isEditable ? (
+          <textarea
+            autoFocus={true}
+            value={text}
+            onFocus={moveCaretAtEnd}
+            onChange={e => setText(e.target.value)}
+          ></textarea>
+        ) : (
+          text
+        )}
+      </pre>
+      {isEditable && <Button onClick={() => updateComment(data.id, text)}>update</Button>}
+    </>
+  );
+}
+
+function CurrentUserButtons({ id, onEdit }: { id: number; onEdit: () => void }) {
   const [showModal, setShowModal] = useState(false);
   const dispatch = useDispatch();
 
@@ -68,13 +104,11 @@ function CurrentUserButtons({ id }: { id: number }) {
           <img src='/assets/icons/icon-delete.svg' alt='delete icon' />
           <p>Delete</p>
         </button>
-        <button className={styles.editBtn}>
+        <button className={styles.editBtn} onClick={onEdit}>
           <img src='/assets/icons/icon-edit.svg' alt='edit icon' /> <p>Edit</p>
         </button>
       </div>
-      {showModal && (
-        <Modal onCancel={handleCancel} onDelete={() => handleDelete(id)} />
-      )}
+      {showModal && <Modal onCancel={handleCancel} onDelete={() => handleDelete(id)} />}
     </>
   );
 }
@@ -88,4 +122,10 @@ function ReplyButton() {
       </button>
     </div>
   );
+}
+
+function moveCaretAtEnd(e: React.FocusEvent<HTMLTextAreaElement>) {
+  const temp_value = e.target.value;
+  e.target.value = '';
+  e.target.value = temp_value;
 }

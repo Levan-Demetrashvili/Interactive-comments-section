@@ -1,0 +1,16 @@
+.btn {
+  color: var(--white);
+  background-color: var(--blue);
+  text-transform: uppercase;
+  line-height: 150%;
+
+  border-radius: 8px;
+  border: none;
+  padding: 12px 30px;
+  transition: background-color 0.2s linear;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--light-gray-blue);
+}

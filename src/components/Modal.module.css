@@ -1,3 +1,7 @@
+.modalContainer {
+  position: fixed;
+}
+
 .overlay {
   position: fixed;
   top: 0;

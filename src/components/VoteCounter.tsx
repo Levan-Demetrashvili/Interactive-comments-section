@@ -1,20 +1,14 @@
 import { useDispatch } from 'react-redux';
 import { upVote, downVote } from '../features/comments/comments';
+import { VoteCounterPropsTypes } from '../types/VoteCounter.types';
 import styles from './VoteCounter.module.css';
-
-interface propsTypes {
-  score: number;
-  id: number;
-  isReply: boolean;
-  defaultScore: number;
-}
 
 export default function VoteCounter({
   id,
   score,
   defaultScore,
   isReply,
-}: propsTypes) {
+}: VoteCounterPropsTypes) {
   const dispatch = useDispatch();
   return (
     <div className={styles.voteContainer}>

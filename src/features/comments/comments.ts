@@ -36,6 +36,15 @@ const commentsSlice = createSlice({
       };
     },
 
+    editComment(state, action) {
+      return {
+        ...state,
+        comments: state.comments.map(c =>
+          c.id === action.payload.id ? { ...c, content: action.payload.text } : c
+        ),
+      };
+    },
+
     upVote(state, action) {
       const isReply = action.payload.isReply;
       state.comments.map(comment => {
@@ -85,8 +94,7 @@ export function fetchComments() {
     try {
       dispatch({ type: 'comments/startFetching' });
       const res: AxiosResponse = await axios.get(API_URL + '/comments');
-      if (!res.data)
-        throw new Error('Something went wrong during fetching comments');
+      if (!res.data) throw new Error('Something went wrong during fetching comments');
       dispatch({
         type: 'comments/ReceivedData',
         payload: res.data,
@@ -115,4 +123,4 @@ export function addComment(content: string) {
 }
 
 export default commentsSlice.reducer;
-export const { upVote, downVote, deleteComment } = commentsSlice.actions;
+export const { upVote, downVote, deleteComment, editComment } = commentsSlice.actions;
