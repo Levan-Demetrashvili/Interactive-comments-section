@@ -7,6 +7,7 @@ export interface ActionTypes {
   payload: any;
   type: string;
   error?: boolean;
+  meta?: number;
 }
 export interface CommentPropsTypes {
   data: Record<string, any>;

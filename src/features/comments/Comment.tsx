@@ -4,8 +4,11 @@ import { deleteComment, editComment } from './comments';
 import { CommentPropsTypes, ContentTextPropsTypes } from './comments.types';
 import VoteCounter from '../../components/VoteCounter';
 import Modal from '../../components/Modal';
+import Reply from './Reply';
 import Button from '../../components/Button';
 import styles from './Comment.module.css';
+
+type ReplyBtnPropsTypes = { setReply: React.Dispatch<React.SetStateAction<boolean>> };
 
 export default function Comment({
   data,
@@ -13,42 +16,51 @@ export default function Comment({
   isReply = false,
 }: CommentPropsTypes) {
   const [isEditable, setIsEditable] = useState(false);
+  const [reply, setReply] = useState(false);
 
+  function handleAddReply() {
+    setReply(false);
+  }
   return (
-    <div className={styles.comment}>
-      <VoteCounter
-        id={data.id}
-        score={data.score}
-        defaultScore={data.defaultScore}
-        isReply={isReply}
-      />
-      <div className={styles.content}>
-        <section>
-          <div className={styles.user}>
-            <img
-              className={styles.avatar}
-              src={data.user.image.webp}
-              alt={data.user.username + 'avatar'}
-            />
-            <strong>{data.user.username}</strong>
-            {isCurrentUser && <p>you</p>}
-
-            <span>{data.createdAt}</span>
-          </div>
-          {isCurrentUser ? (
-            <CurrentUserButtons id={data.id} onEdit={() => setIsEditable(true)} />
-          ) : (
-            <ReplyButton />
-          )}
-        </section>
-        <ContentText
-          data={data}
+    <>
+      <div className={styles.comment}>
+        <VoteCounter
+          id={data.id}
+          score={data.score}
+          defaultScore={data.defaultScore}
           isReply={isReply}
-          isEditable={isEditable}
-          setIsEditable={setIsEditable}
         />
+        <div className={styles.content}>
+          <section>
+            <div className={styles.user}>
+              <img
+                className={styles.avatar}
+                src={data.user.image.webp}
+                alt={data.user.username + 'avatar'}
+              />
+              <strong>{data.user.username}</strong>
+              {isCurrentUser && <p>you</p>}
+
+              <span>{data.createdAt}</span>
+            </div>
+            {isCurrentUser ? (
+              <CurrentUserButtons id={data.id} onEdit={() => setIsEditable(true)} />
+            ) : (
+              <ReplyButton setReply={setReply} />
+            )}
+          </section>
+          <ContentText
+            data={data}
+            isReply={isReply}
+            isEditable={isEditable}
+            setIsEditable={setIsEditable}
+          />
+        </div>
       </div>
-    </div>
+      {reply && (
+        <Reply onAddReply={handleAddReply} to={data.user.username} id={data.id} />
+      )}
+    </>
   );
 }
 
@@ -113,10 +125,10 @@ function CurrentUserButtons({ id, onEdit }: { id: number; onEdit: () => void }) 
   );
 }
 
-function ReplyButton() {
+function ReplyButton({ setReply }: ReplyBtnPropsTypes) {
   return (
     <div className={styles.reply}>
-      <button>
+      <button onClick={() => setReply(true)}>
         <img src='/assets/icons/icon-reply.svg' alt='reply icon' />
         <p>Reply</p>
       </button>

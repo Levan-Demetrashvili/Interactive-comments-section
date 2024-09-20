@@ -58,6 +58,7 @@
           "score": 2,
           "defaultScore": 2,
           "replyingTo": "ramsesmiron",
+          "currentUser": true,
           "user": {
             "image": {
               "png": "/assets/images/image-juliusomo.png",

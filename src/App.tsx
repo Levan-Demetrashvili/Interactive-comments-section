@@ -7,15 +7,13 @@ import styles from './App.module.css';
 
 function App() {
   const comments = useSelector((store: RootState) => store.comments.comments);
+  console.log(comments);
   return (
     <div className={styles.chat}>
       {comments?.map(comment => (
         <div key={comment.id} className={styles.commentContainer}>
-          <Comment
-            data={comment}
-            isCurrentUser={comment.currentUser ? true : false}
-          />
-          {comment.replies[0] && (
+          <Comment data={comment} isCurrentUser={comment.currentUser} />
+          {comment.replies?.[0] && (
             <div className={styles.repliesCont}>
               <hr />
               <div className={styles.replies}>
@@ -24,7 +22,7 @@ function App() {
                     key={reply.id}
                     isReply={true}
                     data={reply}
-                    isCurrentUser={comment.currentUser ? true : false}
+                    isCurrentUser={reply.currentUser}
                   />
                 ))}
               </div>

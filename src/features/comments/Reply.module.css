@@ -1,0 +1,30 @@
+.box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+
+  background: var(--White, #fff);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.box img {
+  width: 40px;
+}
+
+.box button {
+  line-height: 150%;
+  color: var(--white);
+  background-color: var(--blue);
+
+  border-radius: 8px;
+  border: none;
+  padding: 12px 30px;
+  transition: background-color 0.2s linear;
+  cursor: pointer;
+}
+
+/** Hovers */
+.box button:hover {
+  background-color: var(--light-gray-blue);
+}

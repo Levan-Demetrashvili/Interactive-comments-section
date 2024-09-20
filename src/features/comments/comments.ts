@@ -19,7 +19,6 @@ const commentsSlice = createSlice({
       if (action.error)
         state.error = `${action.payload.message} (${action.payload.status})`;
       else state.comments = action.payload;
-      console.log(state.comments);
     },
     startFetching(state) {
       return { ...state, isLoading: true, error: '' };
@@ -29,20 +28,41 @@ const commentsSlice = createSlice({
       return { ...state, comments: [...state.comments, action.payload] };
     },
 
+    addReply(state, action: ActionTypes) {
+      state.comments.forEach(comment => {
+        if (comment.id === action.meta) {
+          comment.replies.push(action.payload);
+          return;
+        }
+        comment.replies.forEach((reply: Record<string, any>) => {
+          if (reply.id === action.meta) {
+            comment.replies.push(action.payload);
+            return;
+          }
+        });
+      });
+    },
+
     deleteComment(state, action) {
-      return {
-        ...state,
-        comments: state.comments.filter(c => c.id !== action.payload),
-      };
+      state.comments = state.comments.filter(c => c.id !== action.payload);
+      state.comments = state.comments.map(comment => {
+        return {
+          ...comment,
+          replies: comment.replies.filter(
+            (reply: Record<string, any>) => reply.id !== action.payload
+          ),
+        };
+      });
     },
 
     editComment(state, action) {
-      return {
-        ...state,
-        comments: state.comments.map(c =>
+      if (action.payload.text) {
+        state.comments = state.comments.map(c =>
           c.id === action.payload.id ? { ...c, content: action.payload.text } : c
-        ),
-      };
+        );
+      } else {
+        state.comments = state.comments.filter(c => c.id !== action.payload.id);
+      }
     },
 
     upVote(state, action) {
@@ -106,7 +126,7 @@ export function fetchComments() {
   };
 }
 
-export function addComment(content: string) {
+export function addComment(content: string, id?: number, to?: string) {
   return async function (dispatch: AppDispatch, getState: () => RootState) {
     const newComment = {
       id: Math.floor(Math.random() * 10_000_000),
@@ -114,11 +134,15 @@ export function addComment(content: string) {
       createdAt: 'now',
       score: 0,
       defaultScore: 0,
-      replies: [],
+      ...(!to ? { replies: [] } : { replyingTo: to }),
       currentUser: true,
       user: getState().currentUser.user,
     };
-    dispatch({ type: 'comments/addComment', payload: newComment });
+    dispatch({
+      type: to ? 'comments/addReply' : 'comments/addComment',
+      payload: newComment,
+      meta: id,
+    });
   };
 }
 
