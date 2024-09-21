@@ -11,7 +11,7 @@ export default function VoteCounter({
 }: VoteCounterPropsTypes) {
   const dispatch = useDispatch();
   return (
-    <div className={styles.voteContainer}>
+    <div className={styles.voteCounter}>
       <button
         className={score === defaultScore + 1 ? styles.voted : ''}
         onClick={() => dispatch(upVote({ id, isReply }))}

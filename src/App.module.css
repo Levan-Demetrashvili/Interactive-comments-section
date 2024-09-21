@@ -26,8 +26,26 @@
 
 .repliesCont hr {
   width: 2px;
+  flex-shrink: 0;
+  background-color: #e9ebf0;
   border: none;
   margin: 0 43px;
-  background-color: #e9ebf0;
-  flex-shrink: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .chat {
+    max-width: none;
+    width: 100%;
+    gap: 16px;
+  }
+  .repliesCont {
+    margin: 16px 0;
+  }
+  .replies {
+    gap: 16px;
+  }
+
+  .repliesCont hr {
+    margin: 0 16px 0 0;
+  }
 }

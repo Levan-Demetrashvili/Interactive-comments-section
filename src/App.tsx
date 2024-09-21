@@ -7,7 +7,7 @@ import styles from './App.module.css';
 
 function App() {
   const comments = useSelector((store: RootState) => store.comments.comments);
-  console.log(comments);
+
   return (
     <div className={styles.chat}>
       {comments?.map(comment => (

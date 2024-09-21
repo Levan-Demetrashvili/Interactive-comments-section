@@ -6,6 +6,11 @@
   padding: 24px;
 }
 
+.voteContainer {
+  flex-basis: 40px;
+  flex-shrink: 0;
+  height: 100px;
+}
 .content {
   width: 100%;
   display: flex;
@@ -35,12 +40,13 @@
 }
 
 .user span,
-.content > pre {
+.content > p {
   width: 100%;
   color: var(--gray-blue);
   font-weight: 400;
   line-height: 150%;
   white-space: break-spaces;
+  line-break: anywhere;
 }
 
 .reply {
@@ -155,4 +161,20 @@
 .currentUserBtns button.editBtn:hover img {
   filter: invert(76%) sepia(9%) saturate(867%) hue-rotate(201deg) brightness(107%)
     contrast(87%);
+}
+
+@media only screen and (max-width: 768px) {
+  .comment {
+    padding: 16px;
+    flex-direction: column-reverse;
+    align-items: baseline;
+  }
+  .voteContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .currentUserBtns {
+    gap: 16px;
+  }
 }

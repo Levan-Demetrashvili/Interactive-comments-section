@@ -4,9 +4,10 @@ import { deleteComment, editComment } from './comments';
 import { CommentPropsTypes, ContentTextPropsTypes } from './comments.types';
 import VoteCounter from '../../components/VoteCounter';
 import Modal from '../../components/Modal';
-import Reply from './Reply';
 import Button from '../../components/Button';
+import SendComment from '../CurrentUser/SendComment';
 import styles from './Comment.module.css';
+import { useMediaQuery } from '@mui/material';
 
 type ReplyBtnPropsTypes = { setReply: React.Dispatch<React.SetStateAction<boolean>> };
 
@@ -18,18 +19,29 @@ export default function Comment({
   const [isEditable, setIsEditable] = useState(false);
   const [reply, setReply] = useState(false);
 
+  const isMobile = useMediaQuery('(max-width:576px)');
+
+  const currentButtons = isCurrentUser ? (
+    <CurrentUserButtons id={data.id} onEdit={() => setIsEditable(true)} />
+  ) : (
+    <ReplyButton setReply={setReply} />
+  );
+
   function handleAddReply() {
     setReply(false);
   }
   return (
     <>
       <div className={styles.comment}>
-        <VoteCounter
-          id={data.id}
-          score={data.score}
-          defaultScore={data.defaultScore}
-          isReply={isReply}
-        />
+        <div className={styles.voteContainer}>
+          <VoteCounter
+            id={data.id}
+            score={data.score}
+            defaultScore={data.defaultScore}
+            isReply={isReply}
+          />
+          {isMobile && currentButtons}
+        </div>
         <div className={styles.content}>
           <section>
             <div className={styles.user}>
@@ -43,11 +55,7 @@ export default function Comment({
 
               <span>{data.createdAt}</span>
             </div>
-            {isCurrentUser ? (
-              <CurrentUserButtons id={data.id} onEdit={() => setIsEditable(true)} />
-            ) : (
-              <ReplyButton setReply={setReply} />
-            )}
+            {!isMobile && currentButtons}
           </section>
           <ContentText
             data={data}
@@ -58,7 +66,10 @@ export default function Comment({
         </div>
       </div>
       {reply && (
-        <Reply onAddReply={handleAddReply} to={data.user.username} id={data.id} />
+        <SendComment
+          type='reply'
+          data={{ onAddReply: handleAddReply, to: data.user.username, id: data.id }}
+        />
       )}
     </>
   );
@@ -79,7 +90,7 @@ function ContentText({
   }
   return (
     <>
-      <pre>
+      <p>
         {isReply && <span className={styles.replyingTo}>@{data.replyingTo}</span>}{' '}
         {isEditable ? (
           <textarea
@@ -91,7 +102,7 @@ function ContentText({
         ) : (
           text
         )}
-      </pre>
+      </p>
       {isEditable && <Button onClick={() => updateComment(data.id, text)}>update</Button>}
     </>
   );

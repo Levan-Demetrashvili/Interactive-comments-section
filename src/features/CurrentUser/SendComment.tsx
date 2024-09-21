@@ -2,19 +2,30 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { addComment } from '../comments/comments';
+import Button from '../../components/Button';
 import styles from './SendComment.module.css';
 
-export default function SendComment() {
+export default function SendComment({
+  type = 'comment',
+  data,
+}: {
+  type?: string;
+  data?: any;
+}) {
   const [text, setText] = useState('');
-  const { user, isLoading } = useSelector(
-    (store: RootState) => store.currentUser
-  );
+  const { user, isLoading } = useSelector((store: RootState) => store.currentUser);
   const dispatch: AppDispatch = useDispatch();
 
-  function handleClick() {
+  function sendComment() {
     if (!text) return;
     dispatch(addComment(text));
     setText('');
+  }
+
+  function addReply() {
+    if (!text) return data.onAddReply();
+    data.onAddReply();
+    dispatch(addComment(text, data.id, data.to));
   }
 
   if (!user || isLoading) return null;
@@ -28,7 +39,9 @@ export default function SendComment() {
         value={text}
         onChange={e => setText(e.target.value)}
       ></textarea>
-      <button onClick={handleClick}>SEND</button>
+      <Button onClick={type === 'reply' ? addReply : sendComment}>
+        {type === 'reply' ? 'reply' : 'send'}
+      </Button>
     </div>
   );
 }
